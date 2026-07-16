@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <title>SOC Sentinel</title>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+
+</head>
+
+<body>
+
+<div class="container">
+
+    <h1>🛡️ SOC Sentinel Dashboard</h1>
+
+    <form method="POST" enctype="multipart/form-data">
+
+        <input type="file" name="logfile" required>
+
+        <button type="submit">Analyze Logs</button>
+
+    </form>
+
+    {% if results %}
+
+    {% if results.failed_logins >= 5 %}
+
+    <div class="alert-box">
+
+        🚨 Possible Brute Force Attack Detected
+
+    </div>
+
+    {% endif %}
+
+    <!-- Statistics -->
+
+    <div class="stats-container">
+
+        <div class="stat-card">
+
+            <h3>🔴 Failed Logins</h3>
+
+            <h1>{{ results.failed_logins }}</h1>
+
+        </div>
+
+        <div class="stat-card">
+
+            <h3>🟢 Successful Logins</h3>
+
+            <h1>{{ results.successful_logins }}</h1>
+
+        </div>
+
+        <div class="stat-card">
+
+            <h3>🟡 Unknown Events</h3>
+
+            <h1>{{ results.unknown_events }}</h1>
+
+        </div>
+
+    </div>
+
+    <!-- Risk -->
+
+    <div class="card">
+
+        <h2>Risk Level</h2>
+
+        {% if results.failed_logins >= 5 %}
+
+        <h2 style="color:#ef4444;">🔴 HIGH</h2>
+
+        {% elif results.failed_logins >=3 %}
+
+        <h2 style="color:#f59e0b;">🟠 MEDIUM</h2>
+
+        {% else %}
+
+        <h2 style="color:#22c55e;">🟢 LOW</h2>
+
+        {% endif %}
+
+    </div>
+
+    <!-- Failed Users -->
+
+    <div class="card">
+
+        <h2>Top Failed Users</h2>
+
+        <table>
+
+            <tr>
+
+                <th>User</th>
+
+                <th>Failed Attempts</th>
+
+            </tr>
+
+            {% for user, count in results.failed_users.items() %}
+
+            <tr>
+
+                <td>{{ user }}</td>
+
+                <td>{{ count }}</td>
+
+            </tr>
+
+            {% endfor %}
+
+        </table>
+
+    </div>
+
+    <!-- Recent Events -->
+
+    <div class="card">
+
+        <h2>Recent Security Events</h2>
+
+        <table>
+
+            <tr>
+
+                <th>User</th>
+
+                <th>Event ID</th>
+
+                <th>IP Address</th>
+
+                <th>Status</th>
+
+            </tr>
+
+            {% for event in results.recent_events %}
+
+            <tr>
+
+                <td>{{ event.user }}</td>
+
+                <td>{{ event.event_id }}</td>
+
+                <td>{{ event.ip }}</td>
+
+                <td>
+
+                    {% if event.status == "Failed Login" %}
+
+                    <span style="color:#ef4444;">🔴 Failed Login</span>
+
+                    {% elif event.status == "Successful Login" %}
+
+                    <span style="color:#22c55e;">🟢 Successful Login</span>
+
+                    {% else %}
+
+                    <span style="color:#f59e0b;">🟡 Unknown Event</span>
+
+                    {% endif %}
+
+                </td>
+
+            </tr>
+
+            {% endfor %}
+
+        </table>
+
+    </div>
+
+    <br>
+
+    <a href="/download">
+
+        <button type="button">
+
+            📄 Download Report
+
+        </button>
+
+    </a>
+
+    {% else %}
+
+    <div class="card">
+
+        <h2>Welcome to SOC Sentinel</h2>
+
+        <p>
+
+            Upload a Windows Security Log file to analyze authentication events,
+
+            detect failed login attempts, and identify possible brute-force attacks.
+
+        </p>
+
+    </div>
+
+    {% endif %}
+
+</div>
+
+</body>
+
+</html>

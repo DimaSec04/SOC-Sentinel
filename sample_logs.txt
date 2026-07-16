@@ -1,0 +1,22 @@
+EventID:4625 | User: Ahmed | IP: 192.168.1.15
+EventID:4625 | User: Ahmed | IP: 192.168.1.15
+EventID:4625 | User: Ahmed | IP: 192.168.1.15
+
+EventID:4625 | User: Sara | IP: 10.0.0.8
+EventID:4625 | User: Sara | IP: 10.0.0.8
+
+EventID:4625 | User: Omar | IP: 172.16.1.22
+
+EventID:4624 | User: Lina | IP: 192.168.10.5
+EventID:4624 | User: Noor | IP: 192.168.10.6
+EventID:4624 | User: Ali | IP: 10.10.10.1
+
+EventID:4688 | User: Ahmed | Process: powershell.exe
+
+EventID:4720 | User: temp_admin
+
+EventID:4728 | User: temp_admin | Group: Administrators
+
+EventID:1102 | User: Ahmed
+
+EventID:9999 | System Check
